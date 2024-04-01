@@ -1,8 +1,8 @@
 # Conversions API for Offline Events Python Script
 
-The goal of this script is to reduce the friction for Advertisers with offline store activities to be able to send offline events with Meta using Conversions API for Offline. A lot of clients do not have enough Dev Resources to develop a full blown Direct Integration for CAPI Offline and there are not enough partners supporting it. This script is a sample script which the advertisers can take and use it to send offline events with minimum lift and resources
+The goal of this script is to make it easy for Advertisers to be send Web CAPI events to Meta using Conversions API on Ad-Hoc basis. Clients may not have enough Dev Resources to develop a full blown Direct Integration for CAPI. This script is a sample script which the advertisers can take and use it to send web events with minimum lift and resources
 
-This is just a sample script and you can modify ths as per your use case. You can also schedule this script via Windows Scheduler or a Cron Job and it can run periodically to upload offline events
+This is just a sample script and you can modify ths as per your use case. You can also schedule this script via Windows Scheduler or a Cron Job and it can run periodically to upload events
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ This is a python script and will need [Python3 or higher installed](https://www.
 
 ### Config file
 
-You need to udpate the config file with your config details which are need to make CAPI for Offline Calls. Below are all the sections and what needs to be in there.
+You need to udpate the config file with your config details which are need to make CAPI for web Calls. Below are all the sections and what needs to be in there.
 
 > Don't use single or double quotes in this file
 
@@ -20,13 +20,15 @@ You need to udpate the config file with your config details which are need to ma
 
 You need to set your DATASET ID, API Version and Access Token here.
 
-#### offline_events_file section
+![Copy Dataset ID and Token](media/copyIDToken0.png "Copy Dataset ID and Token")
 
-Specify the path to the offline events CSV file
+#### channel_attribution_data_file section
+
+Specify the path to the events CSV file which has all the attributed data
 
 #### [user_data section](#user_data-section)
 
-Specify the column name which has this data, e.g if the column user_email on csv stores the `email address`, set it as `email = user_email`. Set it to absent if it is not prsent in the CSV file
+Specify the column name which has this data, e.g if the column user_email on csv stores the `email address`, set it as `email = user_email`. Set it to `absent` if it is not prsent in the CSV file
 
 If your CSV file has only `email`, `phone` and `First Name`, then it will look like this. This list is all the possible user data you can send.
 
@@ -44,16 +46,18 @@ zip_code = absent
 country = absent
 ```
 
-#### [optional_offline_custom_data section](#optional_offline_custom_data-section)
+> All user_data will be hashed (one way) before sending it to Meta
+
+#### [optional_custom_data section](#optional_custom_data-section)
 
 Here you can specify all the optional custom data field you wish to send. Refer to the [developer doc](https://developers.facebook.com/docs/marketing-api/conversions-api/offline-events#custom-data-parameters) for all required and optional colum names.
 
-For example, if the column product_content_type on csv stores the content_type, then `content_type = product_content_type`. Set it to absent if it is not prsent in the CSV file.
+For example, if the column product_content_type on csv stores the content_type, then `content_type = product_content_type`. Set it to `absent` if it is not prsent in the CSV file.
 
 If your CSV file has only `content_type`, and `contents`, then it will look like this. This list is all the possible user data you can send.
 
 ```
-[optional_offline_custom_data]
+[optional_custom_data]
 content_type = content_type
 contents = contents
 custom_data = absent
@@ -80,10 +84,10 @@ Refer to the [developer doc](https://developers.facebook.com/docs/marketing-api/
 
 List of required fields are
 
-* event_time
-* event_name
-* currency
-* value
+* event_time (Format: 3/23/2024 5:00:00 PM)
+* event_name  (ex: Purchase)
+* currency (ex: USD)
+* value (ex: 400)
 
 Refer to the link above to check what each of the fields mean.
 
@@ -94,7 +98,7 @@ Refer to the [*user_data section*](#user_data-section) to check what columns you
 
 #### Custom data
 
-Refer to the [*optional_offline_custom_data section*](#optional_offline_custom_data-section) to check what columns you need to send any custom data
+Refer to the [*optional_custom_data section*](#optional_custom_data-section) to check what columns you need to send any custom data
 
 
 #### Sample CSV file
