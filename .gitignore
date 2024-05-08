@@ -1,2 +1,5 @@
 *.log
 .DS_Store
+build/
+channel_lift_CAPI.spec
+dist/
